@@ -1,0 +1,54 @@
+name: docs
+
+# The reference pages come from the docstrings, so src/ changing changes the site.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "docs/**"
+      - "src/**"
+      - "pyproject.toml"
+      - ".github/workflows/docs.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# one deploy at a time; a newer commit wins
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PYTHONUTF8: "1"
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+      - run: python -m pip install -U pip && python -m pip install -e . --group docs
+      # same flags as the ci job: -n every reference must resolve, -W a warning is an error
+      - run: python -m sphinx -W --keep-going -n -b html docs docs/_build/html
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: docs/_build/html
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.pages.outputs.page_url }}
+    steps:
+      - id: pages
+        uses: actions/deploy-pages@v5
