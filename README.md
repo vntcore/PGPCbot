@@ -51,11 +51,10 @@ for the people who should read them. You don't change anything in the handlers.
 
 ## Install
 
-You need Python 3.11 or newer (tested up to 3.14), on Linux, macOS or Windows. The first
-release is not on PyPI yet, so until it is:
+You need Python 3.11 or newer (tested up to 3.14), on Linux, macOS or Windows.
 
 ```bash
-pip install git+https://github.com/vntcore/PGPCbot
+pip install PGPCbot
 ```
 
 From a clone of the repository, `pip install .`, or `pip install -e .` to work on the code.
@@ -140,7 +139,7 @@ bot.run()
 ```
 
 Publishing the key cannot be undone through the API: only the bot's owner can switch the bot
-back to readable chats, from the console in the app. Read [docs/CRYPTOGRAPHY.md](docs/CRYPTOGRAPHY.md)
+back to readable chats, from the console in the app. Read [the cryptography page][crypto]
 before you go to production.
 
 ## Webhook with FastAPI
@@ -197,7 +196,7 @@ with Client() as api:
 
 ## Documentation
 
-The guides are in the [`docs/`](docs/) folder; the API reference is generated from the
+The guides are in the [`docs/`][docs] folder; the API reference is generated from the
 docstrings. To build the whole documentation as a website with Sphinx:
 
 ```bash
@@ -208,14 +207,13 @@ sphinx-build -b html docs docs/_build/html
 then open `docs/_build/html/index.html`. The same reference is available without a browser:
 `help(pgpcbot.Bot)` in Python, or `python -m pydoc pgpcbot.Bot` in a terminal.
 
-Good places to start: [quick start](docs/getting-started/quickstart.md),
-[cryptography](docs/CRYPTOGRAPHY.md), [API coverage](docs/API_COVERAGE.md),
-[research and decisions](docs/RESEARCH.md). Ready-to-run examples are in
-[`examples/`](examples/).
+Good places to start: [quick start][quickstart], [cryptography][crypto],
+[API coverage][coverage], [research and decisions][research]. Ready-to-run examples are in
+[`examples/`][examples].
 
 ## Security
 
-See [SECURITY.md](SECURITY.md) for the threat model and for how to report a vulnerability. In
+See [SECURITY.md][security] for the threat model and for how to report a vulnerability. In
 short: keep the token and the private key out of your code and out of repositories. If the
 token leaks, `await bot.revoke_token()` burns it at once.
 
@@ -223,3 +221,11 @@ token leaks, `await bot.revoke_token()` burns it at once.
 
 MIT. The dependencies have their own licenses: httpx2 (BSD-3-Clause), pysequoia (Apache-2.0,
 with Sequoia PGP under LGPL-2.0-or-later inside its wheels), rpgp-py (MIT).
+
+[docs]: https://github.com/vntcore/PGPCbot/tree/main/docs
+[examples]: https://github.com/vntcore/PGPCbot/tree/main/examples
+[quickstart]: https://github.com/vntcore/PGPCbot/blob/main/docs/getting-started/quickstart.md
+[crypto]: https://github.com/vntcore/PGPCbot/blob/main/docs/CRYPTOGRAPHY.md
+[coverage]: https://github.com/vntcore/PGPCbot/blob/main/docs/API_COVERAGE.md
+[research]: https://github.com/vntcore/PGPCbot/blob/main/docs/RESEARCH.md
+[security]: https://github.com/vntcore/PGPCbot/blob/main/SECURITY.md
