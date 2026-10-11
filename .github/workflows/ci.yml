@@ -1,0 +1,121 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+      - run: python -m pip install -U pip
+      - run: python -m pip install -e . --group lint
+      - run: ruff check src tests examples scripts
+      - run: ruff format --check src tests examples scripts
+      - run: mypy
+
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python: ["3.11", "3.12", "3.13", "3.14"]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install -U pip
+      - run: python -m pip install -e . --group test
+      - run: python -m coverage run -m pytest
+      - run: python -m coverage report --fail-under=90
+
+  interop:
+    # the phones' library, PGPainless 1.7.6, against what the SDK writes and reads
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      M2: https://repo1.maven.org/maven2
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+      - run: python -m pip install -U pip && python -m pip install -e . --group test
+      - name: fetch the PGPainless runtime
+        run: |
+          mkdir -p jars && cd jars
+          for path in \
+            org/pgpainless/pgpainless-core/1.7.6/pgpainless-core-1.7.6.jar \
+            org/bouncycastle/bcprov-jdk18on/1.80/bcprov-jdk18on-1.80.jar \
+            org/bouncycastle/bcpg-jdk18on/1.80/bcpg-jdk18on-1.80.jar \
+            org/bouncycastle/bcutil-jdk18on/1.80/bcutil-jdk18on-1.80.jar \
+            org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36.jar \
+            com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar \
+            org/jetbrains/kotlin/kotlin-stdlib/2.2.21/kotlin-stdlib-2.2.21.jar; do
+            curl -fsSLO "$M2/$path"
+          done
+          echo "PGPCBOT_PGPAINLESS_CP=$(ls "$PWD"/*.jar | paste -sd:)" >> "$GITHUB_ENV"
+          echo "PGPCBOT_JAVA=$JAVA_HOME_21_X64/bin/java" >> "$GITHUB_ENV"
+      - run: python -m pytest -m interop -v
+
+  docs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      PYTHONUTF8: "1"
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+      - run: python -m pip install -U pip && python -m pip install -e . --group docs
+      - name: the operations page matches openapi.json
+        run: |
+          python scripts/openapi_pages.py
+          git diff --exit-code docs/openapi-reference/operations.md
+      # -n: every reference between objects must resolve; -W: a warning fails the build
+      - run: python -m sphinx -W --keep-going -n -b html docs docs/_build/html
+
+  package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+      - run: python -m pip install -U pip build "twine>=7"
+      - run: python -m build
+      - run: python -m twine check --strict dist/*
+      - name: the wheel installs and imports in a clean environment
+        run: |
+          python -m venv /tmp/clean
+          /tmp/clean/bin/pip install dist/*.whl
+          /tmp/clean/bin/python -c "import pgpcbot; print(pgpcbot.__version__)"
+          /tmp/clean/bin/pgpcbot --version

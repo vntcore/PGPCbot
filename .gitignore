@@ -1,0 +1,39 @@
+# environments
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+
+# python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# tools
+.cache/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+*.log
+
+# docs output
+docs/_build/
+
+# the tests that drive a real server live with the server, not here
+/tests/integration/
+
+# never commit these: bot keys, tokens, local storage
+*.asc
+!tests/fixtures/*.asc
+*.key
+*.db
+*.db-wal
+*.db-shm
+*.lock
