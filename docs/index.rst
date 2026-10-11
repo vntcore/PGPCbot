@@ -1,8 +1,12 @@
 PGPCbot
 =======
 
-PGPCbot is a Python library for writing bots for `PGP Chat <https://pgpchat.app>`_. It covers
-the whole Bot API, and it handles the end-to-end OpenPGP encryption for you.
+PGPCbot is a Python library for writing bots for `PGP Chat <https://pgpchat.app>`_, a messenger
+whose private chats are end-to-end encrypted with OpenPGP. It covers the whole Bot API, and it
+handles the encryption for you.
+
+On `PyPI <https://pypi.org/project/PGPCbot/>`_ (``pip install PGPCbot``) and on
+`GitHub <https://github.com/vntcore/PGPCbot>`_, where the issues are.
 
 .. code-block:: python
 

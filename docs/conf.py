@@ -24,6 +24,8 @@ copyright = "2026, PGP Chat"
 release = __version__
 version = ".".join(__version__.split(".")[:2])
 
+viewcode_follow_imported_members = False
+
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.napoleon",
@@ -90,6 +92,26 @@ html_title = f"PGPCbot {release}"
 html_short_title = "PGPCbot"
 html_copy_source = False
 html_show_sourcelink = False
+# the way back out: the repo button in the sidebar, PyPI and the repo in the footer
+html_theme_options = {
+    "source_repository": "https://github.com/vntcore/PGPCbot/",
+    "source_branch": "main",
+    "source_directory": "docs/",
+    "footer_icons": [
+        {
+            "name": "GitHub",
+            "url": "https://github.com/vntcore/PGPCbot",
+            "html": '<svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor"><path d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.34c-2.23.48-2.7-1.07-2.7-1.07-.36-.93-.89-1.18-.89-1.18-.73-.5.05-.49.05-.49.8.06 1.23.83 1.23.83.72 1.23 1.88.87 2.34.67.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 4 0c1.53-1.03 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.28.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.2c0 .21.14.46.55.38A8 8 0 0 0 8 0Z"/></svg>',
+            "class": "",
+        },
+        {
+            "name": "PyPI",
+            "url": "https://pypi.org/project/PGPCbot/",
+            "html": '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 1.5 3 6v12l9 4.5 9-4.5V6l-9-4.5Zm0 2.3 6.6 3.3L12 10.4 5.4 7.1 12 3.8ZM5 8.8l6 3v7.6l-6-3V8.8Zm8 10.6V11.8l6-3v7.6l-6 3Z"/></svg>',
+            "class": "",
+        },
+    ],
+}
 
 # copying an example leaves the prompts behind
 copybutton_prompt_text = r">>> |\.\.\. |\$ "

@@ -79,7 +79,7 @@ VOLUME /data
 CMD ["python", "bot.py"]
 ```
 
-`requirements.txt` pins `PGPCbot==0.1.0`. Install `ca-certificates`: httpx2 uses the system's
+`requirements.txt` pins the minor version, `PGPCbot>=0.1,<0.2`. Install `ca-certificates`: httpx2 uses the system's
 certificate store.
 
 ```yaml
