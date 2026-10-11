@@ -2,8 +2,9 @@
 
 [![ci](https://github.com/vntcore/PGPCbot/actions/workflows/ci.yml/badge.svg)](https://github.com/vntcore/PGPCbot/actions/workflows/ci.yml)
 
-A Python library for writing bots for [PGP Chat](https://pgpchat.app). It covers the whole
-Bot API, and it handles the end-to-end OpenPGP encryption for you.
+A Python library for writing bots for [PGP Chat](https://pgpchat.app), a messenger whose
+private chats are end-to-end encrypted with OpenPGP. It covers the whole Bot API, and it
+handles the encryption for you.
 
 ```python
 from pgpcbot import Bot
@@ -51,7 +52,9 @@ for the people who should read them. You don't change anything in the handlers.
 
 ## Install
 
-You need Python 3.11 or newer (tested up to 3.14), on Linux, macOS or Windows.
+You need Python 3.11 or newer (tested up to 3.14). The OpenPGP engines come as prebuilt
+wheels for Linux and macOS (x86-64 and arm64) and for Windows (x86-64), so there is nothing
+to compile; anywhere else pip builds them and you need a Rust toolchain.
 
 ```bash
 pip install PGPCbot
