@@ -360,7 +360,8 @@ def test_sqlite_file_is_created_readable_by_its_owner_only(db_path: Path) -> Non
         os.umask(old_umask)
     try:
         assert stat.S_IMODE(db_path.stat().st_mode) == 0o600
-        assert stat.S_IMODE(Path(f"{db_path}.lock").stat().st_mode) == 0o600
+        lock = db_path.with_name(f"{db_path.name}.{BOT_ID}.lock")  # one per bot, not one per file
+        assert stat.S_IMODE(lock.stat().st_mode) == 0o600
     finally:
         store.close()
 
