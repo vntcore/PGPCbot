@@ -47,7 +47,7 @@ pgpcbot = "pgpcbot.__main__:main"
 [project.urls]
 Homepage = "https://pgpchat.app"
 Source = "https://github.com/vntcore/PGPCbot"
-Documentation = "https://github.com/vntcore/PGPCbot/tree/main/docs"
+Documentation = "https://vntcore.github.io/PGPCbot/"
 Issues = "https://github.com/vntcore/PGPCbot/issues"
 Changelog = "https://github.com/vntcore/PGPCbot/blob/main/CHANGELOG.md"
 

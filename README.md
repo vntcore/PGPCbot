@@ -6,6 +6,8 @@ A Python library for writing bots for [PGP Chat](https://pgpchat.app), a messeng
 private chats are end-to-end encrypted with OpenPGP. It covers the whole Bot API, and it
 handles the encryption for you.
 
+**Documentation: <https://vntcore.github.io/PGPCbot/>** - the guides and the whole API reference.
+
 ```python
 from pgpcbot import Bot
 
@@ -199,16 +201,17 @@ with Client() as api:
 
 ## Documentation
 
-The guides are in the [`docs/`][docs] folder; the API reference is generated from the
-docstrings. To build the whole documentation as a website with Sphinx:
+The site is at <https://vntcore.github.io/PGPCbot/>: the guides, and the API reference built from the
+docstrings. It follows `main`.
+
+The same reference without a browser: `help(pgpcbot.Bot)` in Python, or
+`python -m pydoc pgpcbot.Bot` in a terminal. The pages are Markdown in [`docs/`][docs], and
+from a clone you can build the site yourself:
 
 ```bash
 pip install -e . --group docs
 sphinx-build -b html docs docs/_build/html
 ```
-
-then open `docs/_build/html/index.html`. The same reference is available without a browser:
-`help(pgpcbot.Bot)` in Python, or `python -m pydoc pgpcbot.Bot` in a terminal.
 
 Good places to start: [quick start][quickstart], [cryptography][crypto],
 [API coverage][coverage], [research and decisions][research]. Ready-to-run examples are in

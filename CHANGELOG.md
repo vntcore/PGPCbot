@@ -4,6 +4,14 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 numbers follow [Semantic Versioning](https://semver.org/), with the rules in
 `docs/project/versioning.md`.
 
+## [0.1.1] - 2026-10-11
+
+### Changed
+
+- The documentation is a website now, at <https://vntcore.github.io/PGPCbot/>, built from the
+  docstrings and the pages in `docs/`. The `Documentation` link on PyPI points at it, which is
+  the only reason this release exists: those links are fixed once a version is out.
+
 ## [0.1.0] - 2026-10-11
 
 First release.
